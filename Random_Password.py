@@ -6,8 +6,8 @@ import string
 class PasswordGenerator:
     def __init__(self, master):
         self.master = master
-        master.title(" Password Generator")
-        master.geometry("400x300")  # Set the window size to 400x300
+        master.title("Advanced Password Generator")
+        master.geometry("400x350")  # Set the window size to 400x350
 
         # Create main frame
         main_frame = ttk.Frame(master, padding="10")
@@ -62,6 +62,14 @@ class PasswordGenerator:
         self.copy_button = tk.Button(main_frame, text="Copy to Clipboard", command=self.copy_to_clipboard, bg="#03A9F4", fg="#ffffff", font=("Arial", 10))
         self.copy_button.pack(fill="x")
 
+        # Create clear button
+        self.clear_button = tk.Button(main_frame, text="Clear", command=self.clear_fields, bg="#FF9800", fg="#ffffff", font=("Arial", 10))
+        self.clear_button.pack(fill="x")
+
+        # Create exit button
+        self.exit_button = tk.Button(main_frame, text="Exit", command=self.exit_program, bg="#FF0000", fg="#ffffff", font=("Arial", 10))
+        self.exit_button.pack(fill="x")
+
         # Create help menu
         self.help_menu = tk.Menu(self.master)
         self.master.config(menu=self.help_menu)
@@ -105,7 +113,7 @@ class PasswordGenerator:
 
         password = ''.join(random.sample(password, len(password)))
 
-        self.password_entry.delete(0, "end")
+        self.password_entry.delete(0, tk .END)
         self.password_entry.insert(0, password)
 
         strength = self.calculate_password_strength(password)
@@ -121,21 +129,33 @@ class PasswordGenerator:
         self.master.clipboard_clear()
         self.master.clipboard_append(password)
 
+    def clear_fields(self):
+        self.length_entry.delete(0, tk.END)
+        self.uppercase_var.set(0)
+        self.lowercase_var.set(0)
+        self.digits_var.set(0)
+        self.special_chars_var.set(0)
+        self.password_entry.delete(0, tk.END)
+        self.password_strength_label.config(text="Password Strength:")
+
+    def exit_program(self):
+        self.master.destroy()
+
     def show_help(self):
         help_window = tk.Toplevel(self.master)
         help_window.title("Help")
-        help_window.geometry("500x300")
-
-        help_text = "This is a password generator that creates strong and unique passwords.\n\n"
-        help_text += "To use the password generator, follow these steps:\n\n"
-        help_text += "1. Enter the desired password length in the 'Password Length' field.\n"
-        help_text += "2. Select the desired password complexity options (uppercase letters, lowercase letters, digits, and special characters).\n"
-        help_text += "3. Click the 'Generate Password' button to generate a password.\n"
-        help_text += "4. The generated password will be displayed in the 'Generated Password' field.\n"
-        help_text += "5. You can copy the password to the clipboard by clicking the 'Copy to Clipboard' button.\n"
-
-        help_label = ttk.Label(help_window, text=help_text, wraplength=350)
-        help_label.pack(fill="both", expand=True)
+        help_window.geometry("300x200")
+        help_text = tk.Text(help_window)
+        help_text.pack(fill="both", expand=True)
+        help_text.insert(tk.END, "This is a password generator program.\n\n")
+        help_text.insert(tk.END, "To use the program, follow these steps:\n")
+        help_text.insert(tk.END, "1. Enter the desired password length in the 'Password Length' field.\n")
+        help_text.insert(tk.END, "2. Select the desired password complexity options (uppercase letters, lowercase letters, digits, and special characters).\n")
+        help_text.insert(tk.END, "3. Click the 'Generate Password' button to generate a password.\n")
+        help_text.insert(tk.END, "4. The generated password will be displayed in the 'Generated Password' field.\n")
+        help_text.insert(tk.END, "5. You can copy the password to the clipboard by clicking the 'Copy to Clipboard' button.\n")
+        help_text.insert(tk.END, "6. You can clear the fields by clicking the 'Clear' button.\n")
+        help_text.insert(tk.END, "7. You can exit the program by clicking the 'Exit' button.\n")
 
 root = tk.Tk()
 password_generator = PasswordGenerator(root)
